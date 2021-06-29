@@ -1,0 +1,71 @@
+apiVersion: skaffold/v2beta17
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: jinchenhu/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "scr/**/*.js"
+            dest: .
+    - image: jinchenhu/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: jinchenhu/events-bus
+      context: events-bus
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+
+    - image: jinchenhu/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: jinchenhu/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: jinchenhu/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
